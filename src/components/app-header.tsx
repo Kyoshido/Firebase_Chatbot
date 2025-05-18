@@ -1,15 +1,23 @@
 import Link from 'next/link';
-import { MessagesSquare, ToyBrick } from 'lucide-react';
+import { ToyBrick } from 'lucide-react';
+import LanguageSwitcher from './language-switcher';
+import type { Dictionary } from '@/lib/dictionaries';
+import type { Locale } from '@/types/i18n';
 
-export default function AppHeader() {
+interface AppHeaderProps {
+  lang: Locale;
+  dictionary: Pick<Dictionary, 'storyPalChat' | 'language' | 'czech' | 'english'>;
+}
+
+export default function AppHeader({ lang, dictionary }: AppHeaderProps) {
   return (
     <header className="bg-card border-b border-border shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary hover:opacity-80 transition-opacity">
+        <Link href={`/${lang}`} className="flex items-center gap-2 text-2xl font-bold text-primary hover:opacity-80 transition-opacity">
           <ToyBrick className="w-8 h-8 text-accent" />
-          <span>StoryPal Chat</span>
+          <span>{dictionary.storyPalChat}</span>
         </Link>
-        {/* Future navigation items can go here */}
+        <LanguageSwitcher lang={lang} dictionary={dictionary} />
       </div>
     </header>
   );

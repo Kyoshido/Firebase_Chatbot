@@ -3,13 +3,13 @@ import type { LucideIcon } from 'lucide-react';
 export type PersonaIconName = 'Crown' | 'Shield';
 
 export interface Persona {
-  name: string;
+  nameKey: string; // e.g., 'persona.princess.name'
   slug: 'princess' | 'knight';
-  description: string;
-  iconName: PersonaIconName; // Changed from Icon: LucideIcon
+  descriptionKey: string; // e.g., 'persona.princess.description'
+  iconName: PersonaIconName;
   image: {
     src: string;
-    alt: string;
+    alt: string; // This could also be a translation key if needed
     aiHint: string;
   };
 }
@@ -18,7 +18,7 @@ export interface ChatMessage {
   id: string;
   text: string;
   sender: 'user' | 'ai';
-  personaName?: string; // Name of the AI persona
+  personaName?: string; // Name of the AI persona (will be translated)
   timestamp: number;
 }
 

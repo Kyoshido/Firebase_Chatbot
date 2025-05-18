@@ -1,16 +1,20 @@
 import type { ChatMessage } from '@/types';
 import { cn } from '@/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage }_from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'; // Removed AvatarImage import
 import { User, type LucideIcon } from 'lucide-react';
+import type { Locale } from '@/types/i18n';
 
 interface ChatMessageBubbleProps {
   message: ChatMessage;
-  PersonaIcon: LucideIcon; // For AI avatar
+  PersonaIcon: LucideIcon;
+  lang: Locale;
 }
 
-export default function ChatMessageBubble({ message, PersonaIcon }: ChatMessageBubbleProps) {
+export default function ChatMessageBubble({ message, PersonaIcon, lang }: ChatMessageBubbleProps) {
   const isUser = message.sender === 'user';
   const IconComponent = isUser ? User : PersonaIcon;
+
+  const formattedTimestamp = new Date(message.timestamp).toLocaleTimeString(lang, { hour: '2-digit', minute: '2-digit' });
 
   return (
     <div className={cn('flex items-end gap-2', isUser ? 'justify-end' : 'justify-start')}>
@@ -34,7 +38,7 @@ export default function ChatMessageBubble({ message, PersonaIcon }: ChatMessageB
             "text-xs mt-1",
             isUser ? "text-primary-foreground/70 text-right" : "text-muted-foreground/70 text-left"
         )}>
-            {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            {formattedTimestamp}
         </p>
       </div>
       {isUser && (

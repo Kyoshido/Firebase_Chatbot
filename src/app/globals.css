@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 @layer base {
@@ -108,4 +108,19 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Ensure fonts are correctly referenced */
+@font-face {
+  font-family: 'Geist';
+  src: url('/_next/static/media/geist-sans-variable.woff2') format('woff2'); /* Adjust path if necessary */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/_next/static/media/geist-mono-variable.woff2') format('woff2'); /* Adjust path if necessary */
+  font-weight: normal;
+  font-style: normal;
 }

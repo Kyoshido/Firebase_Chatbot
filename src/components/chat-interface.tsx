@@ -10,35 +10,37 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatMessageBubble from '@/components/chat-message-bubble';
 import { useToast } from '@/hooks/use-toast';
 import { SendHorizontal, Loader2, type LucideIcon } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import type { Dictionary } from '@/lib/dictionaries';
+import type { Locale } from '@/types/i18n';
 
 interface ChatInterfaceProps {
   personaSlug: PersonaType;
-  personaName: string;
+  personaName: string; // Already translated by ChatPageContent
   PersonaIcon: LucideIcon;
+  dictionary: Dictionary;
+  lang: Locale;
 }
 
-export default function ChatInterface({ personaSlug, personaName, PersonaIcon }: ChatInterfaceProps) {
+export default function ChatInterface({ personaSlug, personaName, PersonaIcon, dictionary, lang }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  // Welcome message
   useEffect(() => {
     setMessages([
       {
         id: crypto.randomUUID(),
-        text: `Hello! I'm ${personaName}. What shall we talk about today?`,
+        text: (dictionary.personaWelcome || "Hello! I'm {personaName}. What shall we talk about today?").replace('{personaName}', personaName),
         sender: 'ai',
         personaName: personaName,
         timestamp: Date.now(),
       },
     ]);
-  }, [personaName]);
+  }, [personaName, dictionary.personaWelcome]);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
@@ -61,7 +63,6 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon }:
     setIsLoading(true);
 
     try {
-      // AI Persona Response
       const personaInput: EmbodyPersonaInput = { persona: personaSlug, message: currentInput };
       const personaResponse = await embodyPersona(personaInput);
       const aiMessage: ChatMessage = {
@@ -73,27 +74,25 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon }:
       };
       setMessages((prev) => [...prev, aiMessage]);
 
-      // Harmful Behavior Check
       const harmInput: DetectHarmfulBehaviorInput = { text: currentInput };
       const harmDetectionResult = await detectHarmfulBehavior(harmInput);
       if (harmDetectionResult.isHarmful) {
         toast({
           variant: 'destructive',
-          title: 'Harmful Behavior Detected',
-          description: `Reason: ${harmDetectionResult.reason}. A notification would be sent.`,
+          title: dictionary.harmfulBehaviorTitle,
+          description: (dictionary.harmfulBehaviorReason || "Reason: {reason}. A notification would be sent.").replace('{reason}', harmDetectionResult.reason),
         });
       }
     } catch (error) {
       console.error('Error processing message:', error);
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Could not get a response from the character. Please try again.',
+        title: dictionary.genericErrorTitle,
+        description: dictionary.fetchError,
       });
-      // Optionally add error message back to chat or allow resend
        const errorMessage: ChatMessage = {
         id: crypto.randomUUID(),
-        text: "I'm having a little trouble talking right now. Please try again in a moment!",
+        text: dictionary.aiErrorResponse,
         sender: 'ai',
         personaName: personaName,
         timestamp: Date.now(),
@@ -112,13 +111,13 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon }:
             <PersonaIcon className="w-6 h-6" />
           </AvatarFallback>
         </Avatar>
-        <h2 className="text-xl font-semibold text-primary">Chatting with {personaName}</h2>
+        <h2 className="text-xl font-semibold text-primary">{(dictionary.chattingWith || "Chatting with {personaName}").replace('{personaName}', personaName)}</h2>
       </header>
 
       <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.map((msg) => (
-            <ChatMessageBubble key={msg.id} message={msg} PersonaIcon={PersonaIcon} />
+            <ChatMessageBubble key={msg.id} message={msg} PersonaIcon={PersonaIcon} lang={lang} />
           ))}
         </div>
       </ScrollArea>
@@ -127,25 +126,25 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon }:
         <div className="flex items-center gap-2">
           <Input
             type="text"
-            placeholder="Type your message..."
+            placeholder={dictionary.typeYourMessage}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             disabled={isLoading}
             className="flex-grow text-base"
-            aria-label="Chat message input"
+            aria-label={dictionary.typeYourMessage}
           />
           <Button 
             type="submit" 
             disabled={isLoading || !inputValue.trim()}
             className="bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-accent"
-            aria-label="Send message"
+            aria-label={dictionary.sendMessage}
           >
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <SendHorizontal className="h-5 w-5" />
             )}
-            <span className="sr-only">Send</span>
+            <span className="sr-only">{dictionary.sendMessage}</span>
           </Button>
         </div>
       </form>

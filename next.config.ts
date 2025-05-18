@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  i18n: {
+    locales: ['cs', 'en'],
+    defaultLocale: 'cs',
+    localeDetection: false, // Recommended for explicit language switcher
+  },
 };
 
 export default nextConfig;
