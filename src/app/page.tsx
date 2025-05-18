@@ -1,6 +1,7 @@
+
 import PersonaSelector from '@/components/persona-selector';
 import type { Persona } from '@/types';
-import { getDictionary } from '@/lib/dictionaries';
+import { getDictionary, type Dictionary } from '@/lib/dictionaries';
 
 const personasData: Omit<Persona, 'name' | 'description'>[] = [
   {
@@ -9,7 +10,7 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
     descriptionKey: 'persona.princess.description',
     iconName: 'Crown',
     image: {
-      src: 'https://placehold.co/300x300.png',
+      src: '/images/zlatovlaska.png', // Updated path
       alt: 'Kreslená Zlatovláska', 
       aiHint: 'Zlatovláska kreslená',
     },
@@ -20,7 +21,7 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
     descriptionKey: 'persona.knight.description',
     iconName: 'Shield',
     image: {
-      src: 'https://placehold.co/300x300.png',
+      src: '/images/lancelot.png', // Updated path
       alt: 'Kreslený Lancelot',
       aiHint: 'Lancelot kreslený',
     },
@@ -28,7 +29,7 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
 ];
 
 export default async function HomePage() {
-  const dictionary = await getDictionary();
+  const dictionary = await getDictionary(); // Defaulting to 'cs'
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -38,4 +39,3 @@ export default async function HomePage() {
     </div>
   );
 }
-
