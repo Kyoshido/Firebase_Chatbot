@@ -6,6 +6,7 @@ import AppHeader from '@/components/app-header';
 import { cn } from '@/lib/utils';
 import { getDictionary, type Dictionary } from '@/lib/dictionaries';
 import type { Locale } from '@/types/i18n';
+import FooterTextClient from '@/components/footer-text-client';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -42,7 +43,7 @@ export default async function RootLayout({
   params: { lang },
 }: RootLayoutProps) {
   const dictionary = await getDictionary(lang);
-  const currentYear = new Date().getFullYear();
+  // const currentYear = new Date().getFullYear(); // Moved to client component
 
   return (
     <html lang={lang} suppressHydrationWarning>
@@ -53,7 +54,7 @@ export default async function RootLayout({
             {children}
           </main>
           <footer className="py-4 text-center text-sm text-muted-foreground">
-            {dictionary.footerText.replace('{year}', currentYear.toString())}
+            <FooterTextClient template={dictionary.footerText} placeholderYear={new Date().getFullYear().toString()} />
           </footer>
         </div>
         <Toaster />
