@@ -62,7 +62,7 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
     setIsLoading(true);
 
     try {
-      const personaInput: EmbodyPersonaInput = { persona: personaSlug, message: currentInput };
+      const personaInput: EmbodyPersonaInput = { persona: personaSlug, personaName: personaName, message: currentInput };
       const personaResponse = await embodyPersona(personaInput);
       const aiMessage: ChatMessage = {
         id: crypto.randomUUID(),

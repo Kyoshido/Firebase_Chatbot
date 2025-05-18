@@ -12,6 +12,7 @@ import {z} from 'genkit';
 
 const EmbodyPersonaInputSchema = z.object({
   persona: z.enum(['princess', 'knight']).describe('The chosen character persona for the chat.'),
+  personaName: z.string().describe('The name of the character persona.'),
   message: z.string().describe('The user message to be responded to by the persona.'),
 });
 export type EmbodyPersonaInput = z.infer<typeof EmbodyPersonaInputSchema>;
@@ -29,7 +30,7 @@ const prompt = ai.definePrompt({
   name: 'embodyPersonaPrompt',
   input: {schema: EmbodyPersonaInputSchema},
   output: {schema: EmbodyPersonaOutputSchema},
-  prompt: `You are a friendly chatbot embodying the persona of a {{persona}}. Your goal is to have an engaging conversation with children.
+  prompt: `You are a friendly chatbot. Your name is {{personaName}} and you are a {{persona}}. Your goal is to have an engaging conversation with children.
 
   Respond to the following message from the user, keeping your response appropriate for their age and understanding. The message from the user is:
   """{{message}}"""
