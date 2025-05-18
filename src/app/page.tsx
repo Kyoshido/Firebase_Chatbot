@@ -21,7 +21,7 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
     descriptionKey: 'persona.knight.description',
     iconName: 'Shield',
     image: {
-      src: '/images/lancelot.png',
+      src: '/images/knight.jpg', // Updated path
       alt: 'Kreslený Lancelot',
       aiHint: 'Lancelot kreslený',
     },
@@ -39,3 +39,4 @@ export default async function HomePage() {
     </div>
   );
 }
+
