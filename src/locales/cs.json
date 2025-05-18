@@ -3,15 +3,15 @@
   "appTitle": "Pokec s hrdiny",
   "welcomeToStoryPal": "Vítejte v Pokec s hrdiny!",
   "chooseFriend": "Vyberte si kamaráda na povídání:",
-  "persona.princess.name": "Princezna Amalia",
+  "persona.princess.name": "Zlatovláska",
   "persona.princess.description": "Povídejte si s milou a dobrodružnou princeznou z kouzelného království!",
-  "persona.knight.name": "Statečný rytíř Reginald",
+  "persona.knight.name": "Lancelot",
   "persona.knight.description": "Vydejte se na vzrušující výpravy a sdílejte statečné příběhy s ušlechtilým rytířem!",
   "chatWith": "Pokec s {personaName}",
   "chattingWith": "Pokec s {personaName}",
   "typeYourMessage": "Napište svou zprávu...",
   "sendMessage": "Odeslat",
-  "loadingChat": "Načítání pokecu...",
+  "loadingChat": "Načítání Pokecu...",
   "invalidPersona": "Vybrána neplatná postava",
   "redirectingToSelection": "Přesměrování na výběr postavy...",
   "personaWelcome": "Ahoj! Jsem {personaName}. O čem si dnes budeme povídat?",
@@ -26,3 +26,4 @@
   "footerText": "© {year} Pokec s hrdiny. Všechna práva vyhrazena.",
   "storyPalChat": "Pokec s hrdiny"
 }
+

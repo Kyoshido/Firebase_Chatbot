@@ -10,8 +10,8 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
     iconName: 'Crown',
     image: {
       src: 'https://placehold.co/300x300.png',
-      alt: 'A friendly cartoon princess', 
-      aiHint: 'princess character cartoon',
+      alt: 'Kreslená Zlatovláska', 
+      aiHint: 'Zlatovláska kreslená',
     },
   },
   {
@@ -21,8 +21,8 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
     iconName: 'Shield',
     image: {
       src: 'https://placehold.co/300x300.png',
-      alt: 'A brave cartoon knight',
-      aiHint: 'knight character cartoon',
+      alt: 'Kreslený Lancelot',
+      aiHint: 'Lancelot kreslený',
     },
   },
 ];
@@ -32,9 +32,10 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-2 text-primary">{(dictionary.welcomeToStoryPal as string) || "Welcome!"}</h1>
-      <p className="text-xl text-muted-foreground mb-12">{(dictionary.chooseFriend as string) || "Choose a friend:"}</p>
+      <h1 className="text-4xl font-bold mb-2 text-primary">{(dictionary.welcomeToStoryPal as string) || "Vítejte!"}</h1>
+      <p className="text-xl text-muted-foreground mb-12">{(dictionary.chooseFriend as string) || "Vyberte si kamaráda:"}</p>
       <PersonaSelector personas={personasData} dictionary={dictionary} />
     </div>
   );
 }
+
