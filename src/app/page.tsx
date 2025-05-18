@@ -10,7 +10,7 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
     descriptionKey: 'persona.princess.description',
     iconName: 'Crown',
     image: {
-      src: '/images/zlatovlaska.png', // Updated path
+      src: '/images/princess.jpg', // Updated path
       alt: 'Kreslená Zlatovláska', 
       aiHint: 'Zlatovláska kreslená',
     },
@@ -21,7 +21,7 @@ const personasData: Omit<Persona, 'name' | 'description'>[] = [
     descriptionKey: 'persona.knight.description',
     iconName: 'Shield',
     image: {
-      src: '/images/lancelot.png', // Updated path
+      src: '/images/lancelot.png',
       alt: 'Kreslený Lancelot',
       aiHint: 'Lancelot kreslený',
     },
