@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Persona as PersonaTypeDefinition } from '@/types';
@@ -48,7 +49,7 @@ export default function PersonaSelector({ personas, dictionary }: PersonaSelecto
               <CardDescription className="text-sm h-16">{description}</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center flex-grow">
-              <div className="relative w-48 h-48 mb-6 rounded-lg overflow-hidden shadow-md">
+              <div className="relative w-48 h-96 mb-6 rounded-lg overflow-hidden shadow-md">
                 <Image
                   src={persona.image.src}
                   alt={persona.image.alt}
