@@ -20,10 +20,6 @@
   "harmfulBehaviorReason": "Důvod: {reason}. Bylo by odesláno upozornění.",
   "genericErrorTitle": "Chyba",
   "fetchError": "Nepodařilo se získat odpověď od postavy. Zkuste to prosím znovu.",
-  "language": "Jazyk",
-  "czech": "Čeština",
-  "english": "Angličtina",
   "footerText": "© {year} Pokec s hrdiny. Všechna práva vyhrazena.",
   "storyPalChat": "Pokec s hrdiny"
 }
-

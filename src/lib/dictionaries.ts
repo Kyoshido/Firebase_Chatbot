@@ -33,6 +33,7 @@ export const getDictionary = async (): Promise<BaseDictionary> => {
     return czechDictionary;
   }
 
+  // For dev, or if in prod and cache is empty/invalid, load fresh.
   const dict = await loadCzechDictionary();
   if (process.env.NODE_ENV === 'production') {
     czechDictionary = dict; // Cache whatever is loaded, even an empty object, but only in production
@@ -42,4 +43,3 @@ export const getDictionary = async (): Promise<BaseDictionary> => {
 
 // Dictionary type will now be BaseDictionary, which is at least an empty object.
 export type Dictionary = BaseDictionary;
-
