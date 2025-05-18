@@ -1,6 +1,7 @@
+
 {
-  "appTitle": "StoryPal Chat",
-  "welcomeToStoryPal": "Vítejte v StoryPal Chatu!",
+  "appTitle": "Chat s hrdiny",
+  "welcomeToStoryPal": "Vítejte v Chat s hrdiny!",
   "chooseFriend": "Vyberte si kamaráda na povídání:",
   "persona.princess.name": "Princezna Amalia",
   "persona.princess.description": "Povídejte si s milou a dobrodružnou princeznou z kouzelného království!",
@@ -22,6 +23,6 @@
   "language": "Jazyk",
   "czech": "Čeština",
   "english": "Angličtina",
-  "footerText": "© {year} StoryPal Chat. Všechna práva vyhrazena.",
-  "storyPalChat": "StoryPal Chat"
+  "footerText": "© {year} Chat s hrdiny. Všechna práva vyhrazena.",
+  "storyPalChat": "Chat s hrdiny"
 }
