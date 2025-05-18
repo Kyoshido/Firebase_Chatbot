@@ -1,12 +1,10 @@
-
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
+import './globals.css'; // Adjusted path
 import { Toaster } from '@/components/ui/toaster';
 import AppHeader from '@/components/app-header';
 import { cn } from '@/lib/utils';
-import { getDictionary } from '@/lib/dictionaries';
-import type { Locale } from '@/types/i18n';
+import { getDictionary, type Dictionary } from '@/lib/dictionaries';
 import FooterTextClient from '@/components/footer-text-client';
 
 const geistSans = Geist({
@@ -19,34 +17,40 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
-  const lang: Locale = 'cs'; // Default to Czech for the root layout
-  const dictionary = await getDictionary(lang);
+  const dictionary = await getDictionary();
   return {
-    title: dictionary.appTitle,
-    description: dictionary.welcomeToStoryPal, // Using a relevant key from dictionary
+    title: (dictionary.appTitle as string) || 'StoryPal Chat',
+    description: (dictionary.welcomeToStoryPal as string) || 'Welcome to StoryPal Chat!',
   };
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
 }
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const lang: Locale = 'cs'; // Default to Czech
-  const dictionary = await getDictionary(lang);
-  // const currentYear = new Date().getFullYear(); // Moved to client component
+}: RootLayoutProps) {
+  const dictionary = await getDictionary();
 
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html lang="cs" suppressHydrationWarning>
       <body className={cn(geistSans.variable, geistMono.variable, 'antialiased font-sans')} suppressHydrationWarning>
         <div className="flex flex-col min-h-screen">
-          <AppHeader lang={lang} dictionary={dictionary} />
+          <AppHeader dictionary={dictionary} />
           <main className="flex-grow container mx-auto px-4 py-8">
             {children}
           </main>
           <footer className="py-4 text-center text-sm text-muted-foreground">
-            <FooterTextClient template={dictionary.footerText} placeholderYear={new Date().getFullYear().toString()} />
+            <FooterTextClient template={dictionary.footerText as string} placeholderYear={new Date().getFullYear().toString()} />
           </footer>
         </div>
         <Toaster />

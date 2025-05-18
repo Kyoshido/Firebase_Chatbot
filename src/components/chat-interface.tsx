@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
@@ -13,17 +12,15 @@ import { useToast } from '@/hooks/use-toast';
 import { SendHorizontal, Loader2, type LucideIcon } from 'lucide-react';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Dictionary } from '@/lib/dictionaries';
-import type { Locale } from '@/types/i18n';
 
 interface ChatInterfaceProps {
   personaSlug: PersonaType;
   personaName: string; 
   PersonaIcon: LucideIcon;
-  dictionary: Dictionary; // Could be an empty object {}
-  lang: Locale;
+  dictionary: Dictionary;
 }
 
-export default function ChatInterface({ personaSlug, personaName, PersonaIcon, dictionary, lang }: ChatInterfaceProps) {
+export default function ChatInterface({ personaSlug, personaName, PersonaIcon, dictionary }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +28,7 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const welcomeMessageTemplate = dictionary?.personaWelcome || "Hello! I'm {personaName}. What shall we talk about today?";
+    const welcomeMessageTemplate = (dictionary?.personaWelcome as string) || "Hello! I'm {personaName}. What shall we talk about today?";
     setMessages([
       {
         id: crypto.randomUUID(),
@@ -79,10 +76,10 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
       const harmInput: DetectHarmfulBehaviorInput = { text: currentInput };
       const harmDetectionResult = await detectHarmfulBehavior(harmInput);
       if (harmDetectionResult.isHarmful) {
-        const harmfulReasonTemplate = dictionary?.harmfulBehaviorReason || "Reason: {reason}. A notification would be sent.";
+        const harmfulReasonTemplate = (dictionary?.harmfulBehaviorReason as string) || "Reason: {reason}. A notification would be sent.";
         toast({
           variant: 'destructive',
-          title: dictionary?.harmfulBehaviorTitle || "Harmful Behavior Detected",
+          title: (dictionary?.harmfulBehaviorTitle as string) || "Harmful Behavior Detected",
           description: harmfulReasonTemplate.replace('{reason}', harmDetectionResult.reason),
         });
       }
@@ -90,12 +87,12 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
       console.error('Error processing message:', error);
       toast({
         variant: 'destructive',
-        title: dictionary?.genericErrorTitle || "Error",
-        description: dictionary?.fetchError || "Could not get a response. Please try again.",
+        title: (dictionary?.genericErrorTitle as string) || "Error",
+        description: (dictionary?.fetchError as string) || "Could not get a response. Please try again.",
       });
        const errorMessage: ChatMessage = {
         id: crypto.randomUUID(),
-        text: dictionary?.aiErrorResponse || "I'm having trouble responding. Please try again.",
+        text: (dictionary?.aiErrorResponse as string) || "I'm having trouble responding. Please try again.",
         sender: 'ai',
         personaName: personaName,
         timestamp: Date.now(),
@@ -106,9 +103,9 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
     }
   };
 
-  const chattingWithTemplate = dictionary?.chattingWith || "Chatting with {personaName}";
-  const typeMessagePlaceholder = dictionary?.typeYourMessage || "Type your message...";
-  const sendMessageLabel = dictionary?.sendMessage || "Send";
+  const chattingWithTemplate = (dictionary?.chattingWith as string) || "Chatting with {personaName}";
+  const typeMessagePlaceholder = (dictionary?.typeYourMessage as string) || "Type your message...";
+  const sendMessageLabel = (dictionary?.sendMessage as string) || "Send";
 
   return (
     <div className="flex flex-col h-[calc(100vh-220px)] max-w-3xl mx-auto bg-card shadow-xl rounded-lg border border-border">
@@ -124,7 +121,7 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
       <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.map((msg) => (
-            <ChatMessageBubble key={msg.id} message={msg} PersonaIcon={PersonaIcon} lang={lang} />
+            <ChatMessageBubble key={msg.id} message={msg} PersonaIcon={PersonaIcon} />
           ))}
         </div>
       </ScrollArea>

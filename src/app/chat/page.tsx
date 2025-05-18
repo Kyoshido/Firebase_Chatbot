@@ -1,6 +1,8 @@
 import ChatPageContent from '@/components/chat-page-content';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getDictionary } from '@/lib/dictionaries';
+import type { Metadata } from 'next';
 
 function ChatLoadingSkeleton() {
   return (
@@ -25,11 +27,18 @@ function ChatLoadingSkeleton() {
   );
 }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const dictionary = await getDictionary();
+  return {
+    title: `${(dictionary?.appTitle as string) || 'StoryPal Chat'} - Chat`, 
+  };
+}
 
-export default function ChatPage() {
+export default async function ChatPage() {
+  const dictionary = await getDictionary();
   return (
     <Suspense fallback={<ChatLoadingSkeleton />}>
-      <ChatPageContent />
+      <ChatPageContent dictionary={dictionary} />
     </Suspense>
   );
 }
