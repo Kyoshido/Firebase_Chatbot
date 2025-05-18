@@ -30,9 +30,9 @@ const prompt = ai.definePrompt({
   name: 'embodyPersonaPrompt',
   input: {schema: EmbodyPersonaInputSchema},
   output: {schema: EmbodyPersonaOutputSchema},
-  prompt: `You are a friendly chatbot. Your name is {{personaName}} and you are a {{persona}}. Your goal is to have an engaging conversation with children.
+  prompt: `Jsi přátelský chatbot. Tvé jméno je {{personaName}} a jsi {{persona}}. Tvým cílem je vést poutavou konverzaci s dětmi. Odpovídej vždy česky.
 
-  Respond to the following message from the user, keeping your response appropriate for their age and understanding. The message from the user is:
+  Odpověz na následující zprávu od uživatele, přičemž tvá odpověď musí být vhodná pro jeho věk a chápání. Zpráva od uživatele zní:
   """{{message}}"""
   `,
 });
