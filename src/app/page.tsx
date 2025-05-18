@@ -1,38 +1,43 @@
 import PersonaSelector from '@/components/persona-selector';
 import type { Persona } from '@/types';
-// Removed: import { Crown, Shield } from 'lucide-react';
+import { getDictionary } from '@/lib/dictionaries';
+import type { Locale } from '@/types/i18n';
 
-const personas: Persona[] = [
+// Consistent data structure with nameKey and descriptionKey
+const personasData: Omit<Persona, 'name' | 'description'>[] = [
   {
-    name: 'Princess Amalia',
+    nameKey: 'persona.princess.name',
     slug: 'princess',
-    description: 'Chat with a kind and adventurous princess from a magical kingdom!',
-    iconName: 'Crown', // Changed from Icon: Crown
+    descriptionKey: 'persona.princess.description',
+    iconName: 'Crown',
     image: {
       src: 'https://placehold.co/300x300.png',
-      alt: 'A friendly cartoon princess',
+      alt: 'A friendly cartoon princess', // Consider making this a translation key as well
       aiHint: 'princess character cartoon',
     },
   },
   {
-    name: 'Sir Reginald the Brave',
+    nameKey: 'persona.knight.name',
     slug: 'knight',
-    description: 'Embark on exciting quests and share brave tales with a noble knight!',
-    iconName: 'Shield', // Changed from Icon: Shield
+    descriptionKey: 'persona.knight.description',
+    iconName: 'Shield',
     image: {
       src: 'https://placehold.co/300x300.png',
-      alt: 'A brave cartoon knight',
+      alt: 'A brave cartoon knight', // Consider making this a translation key as well
       aiHint: 'knight character cartoon',
     },
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const lang: Locale = 'cs'; // Default to Czech for the root page
+  const dictionary = await getDictionary(lang);
+
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-2 text-primary">Welcome to StoryPal Chat!</h1>
-      <p className="text-xl text-muted-foreground mb-12">Choose a friend to talk to:</p>
-      <PersonaSelector personas={personas} />
+      <h1 className="text-4xl font-bold mb-2 text-primary">{dictionary.welcomeToStoryPal}</h1>
+      <p className="text-xl text-muted-foreground mb-12">{dictionary.chooseFriend}</p>
+      <PersonaSelector personas={personasData} dictionary={dictionary} lang={lang} />
     </div>
   );
 }
