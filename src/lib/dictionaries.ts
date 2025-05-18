@@ -26,15 +26,20 @@ const loadCzechDictionary = async (): Promise<BaseDictionary> => {
 let czechDictionary: BaseDictionary | null = null;
 
 export const getDictionary = async (): Promise<BaseDictionary> => {
-  if (czechDictionary && Object.keys(czechDictionary).length > 0) {
+  // In development, always reload to try and pick up JSON changes.
+  // In production, use the cache.
+  if (process.env.NODE_ENV === 'production' && czechDictionary && Object.keys(czechDictionary).length > 0) {
     // Return from cache if available and not empty (unless it was empty upon load)
     return czechDictionary;
   }
 
   const dict = await loadCzechDictionary();
-  czechDictionary = dict; // Cache whatever is loaded, even an empty object
+  if (process.env.NODE_ENV === 'production') {
+    czechDictionary = dict; // Cache whatever is loaded, even an empty object, but only in production
+  }
   return dict;
 };
 
 // Dictionary type will now be BaseDictionary, which is at least an empty object.
 export type Dictionary = BaseDictionary;
+
