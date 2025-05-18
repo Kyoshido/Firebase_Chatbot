@@ -1,3 +1,4 @@
+
 import ChatPageContent from '@/components/chat-page-content';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -34,9 +35,8 @@ interface ChatPageProps {
 
 export async function generateMetadata({ params: { lang } }: ChatPageProps): Promise<Metadata> {
   const dictionary = await getDictionary(lang);
-  // You might want to make this more dynamic based on the persona being chatted with
   return {
-    title: `${dictionary.appTitle} - Chat`, 
+    title: `${dictionary?.appTitle || 'StoryPal Chat'} - Chat`, 
   };
 }
 

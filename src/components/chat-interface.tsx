@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect, type FormEvent } from 'react';
@@ -16,9 +17,9 @@ import type { Locale } from '@/types/i18n';
 
 interface ChatInterfaceProps {
   personaSlug: PersonaType;
-  personaName: string; // Already translated by ChatPageContent
+  personaName: string; 
   PersonaIcon: LucideIcon;
-  dictionary: Dictionary;
+  dictionary: Dictionary; // Could be an empty object {}
   lang: Locale;
 }
 
@@ -30,16 +31,17 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const welcomeMessageTemplate = dictionary?.personaWelcome || "Hello! I'm {personaName}. What shall we talk about today?";
     setMessages([
       {
         id: crypto.randomUUID(),
-        text: (dictionary.personaWelcome || "Hello! I'm {personaName}. What shall we talk about today?").replace('{personaName}', personaName),
+        text: welcomeMessageTemplate.replace('{personaName}', personaName),
         sender: 'ai',
         personaName: personaName,
         timestamp: Date.now(),
       },
     ]);
-  }, [personaName, dictionary.personaWelcome]);
+  }, [personaName, dictionary?.personaWelcome]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -77,22 +79,23 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
       const harmInput: DetectHarmfulBehaviorInput = { text: currentInput };
       const harmDetectionResult = await detectHarmfulBehavior(harmInput);
       if (harmDetectionResult.isHarmful) {
+        const harmfulReasonTemplate = dictionary?.harmfulBehaviorReason || "Reason: {reason}. A notification would be sent.";
         toast({
           variant: 'destructive',
-          title: dictionary.harmfulBehaviorTitle,
-          description: (dictionary.harmfulBehaviorReason || "Reason: {reason}. A notification would be sent.").replace('{reason}', harmDetectionResult.reason),
+          title: dictionary?.harmfulBehaviorTitle || "Harmful Behavior Detected",
+          description: harmfulReasonTemplate.replace('{reason}', harmDetectionResult.reason),
         });
       }
     } catch (error) {
       console.error('Error processing message:', error);
       toast({
         variant: 'destructive',
-        title: dictionary.genericErrorTitle,
-        description: dictionary.fetchError,
+        title: dictionary?.genericErrorTitle || "Error",
+        description: dictionary?.fetchError || "Could not get a response. Please try again.",
       });
        const errorMessage: ChatMessage = {
         id: crypto.randomUUID(),
-        text: dictionary.aiErrorResponse,
+        text: dictionary?.aiErrorResponse || "I'm having trouble responding. Please try again.",
         sender: 'ai',
         personaName: personaName,
         timestamp: Date.now(),
@@ -103,6 +106,10 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
     }
   };
 
+  const chattingWithTemplate = dictionary?.chattingWith || "Chatting with {personaName}";
+  const typeMessagePlaceholder = dictionary?.typeYourMessage || "Type your message...";
+  const sendMessageLabel = dictionary?.sendMessage || "Send";
+
   return (
     <div className="flex flex-col h-[calc(100vh-220px)] max-w-3xl mx-auto bg-card shadow-xl rounded-lg border border-border">
       <header className="p-4 border-b border-border flex items-center gap-3">
@@ -111,7 +118,7 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
             <PersonaIcon className="w-6 h-6" />
           </AvatarFallback>
         </Avatar>
-        <h2 className="text-xl font-semibold text-primary">{(dictionary.chattingWith || "Chatting with {personaName}").replace('{personaName}', personaName)}</h2>
+        <h2 className="text-xl font-semibold text-primary">{chattingWithTemplate.replace('{personaName}', personaName)}</h2>
       </header>
 
       <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}>
@@ -126,25 +133,25 @@ export default function ChatInterface({ personaSlug, personaName, PersonaIcon, d
         <div className="flex items-center gap-2">
           <Input
             type="text"
-            placeholder={dictionary.typeYourMessage}
+            placeholder={typeMessagePlaceholder}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             disabled={isLoading}
             className="flex-grow text-base"
-            aria-label={dictionary.typeYourMessage}
+            aria-label={typeMessagePlaceholder}
           />
           <Button 
             type="submit" 
             disabled={isLoading || !inputValue.trim()}
             className="bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-accent"
-            aria-label={dictionary.sendMessage}
+            aria-label={sendMessageLabel}
           >
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <SendHorizontal className="h-5 w-5" />
             )}
-            <span className="sr-only">{dictionary.sendMessage}</span>
+            <span className="sr-only">{sendMessageLabel}</span>
           </Button>
         </div>
       </form>

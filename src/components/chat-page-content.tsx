@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -19,7 +20,7 @@ const personaDetailsData: PersonaDetails = {
 
 interface ChatPageContentProps {
   lang: Locale;
-  dictionary: Dictionary;
+  dictionary: Dictionary; // Can still be {} if dictionary loaded empty, or undefined if SSR failed badly
 }
 
 export default function ChatPageContent({ lang, dictionary }: ChatPageContentProps) {
@@ -35,9 +36,9 @@ export default function ChatPageContent({ lang, dictionary }: ChatPageContentPro
       setIsValidPersona(false);
       const timer = setTimeout(() => {
          if (!searchParams.get('persona') || (searchParams.get('persona') !== 'princess' && searchParams.get('persona') !== 'knight')) {
-            router.push(`/${lang}`); // Redirect to localized home
+            router.push(`/${lang}`); 
          }
-      }, 50);
+      }, 50); // Reduced timeout for faster redirect decision
       return () => clearTimeout(timer);
     }
   }, [personaSlug, router, lang, searchParams]);
@@ -45,7 +46,7 @@ export default function ChatPageContent({ lang, dictionary }: ChatPageContentPro
   if (isValidPersona === null) {
     return (
       <div className="flex justify-center items-center h-full">
-        <p className="text-lg text-muted-foreground">{dictionary.loadingChat}</p>
+        <p className="text-lg text-muted-foreground">{dictionary?.loadingChat || 'Loading chat...'}</p>
       </div>
     );
   }
@@ -53,21 +54,23 @@ export default function ChatPageContent({ lang, dictionary }: ChatPageContentPro
   if (!isValidPersona || !personaSlug) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
-        <p className="text-xl font-semibold text-destructive mb-4">{dictionary.invalidPersona}</p>
-        <p className="text-muted-foreground">{dictionary.redirectingToSelection}</p>
+        <p className="text-xl font-semibold text-destructive mb-4">{dictionary?.invalidPersona || 'Invalid Persona Selected'}</p>
+        <p className="text-muted-foreground">{dictionary?.redirectingToSelection || 'Redirecting to persona selection...'}</p>
       </div>
     );
   }
   
   const currentPersonaDetails = personaDetailsData[personaSlug];
-  const personaName = dictionary[currentPersonaDetails.nameKey as keyof Dictionary] || currentPersonaDetails.nameKey;
+  const personaNameKey = currentPersonaDetails.nameKey as keyof Dictionary;
+  const personaName = (dictionary?.[personaNameKey]) || 
+                      (currentPersonaDetails.nameKey.split('.').pop() || personaSlug);
 
   return (
     <ChatInterface 
       personaSlug={personaSlug} 
       personaName={personaName}
       PersonaIcon={currentPersonaDetails.Icon}
-      dictionary={dictionary}
+      dictionary={dictionary || {}} // Pass empty object if dictionary is null/undefined
       lang={lang}
     />
   );
