@@ -38,7 +38,7 @@ export default async function RootLayout({
 
   return (
     <html lang={lang} suppressHydrationWarning>
-      <body className={cn(geistSans.variable, geistMono.variable, 'antialiased font-sans')}>
+      <body className={cn(geistSans.variable, geistMono.variable, 'antialiased font-sans')} suppressHydrationWarning>
         <div className="flex flex-col min-h-screen">
           <AppHeader lang={lang} dictionary={dictionary} />
           <main className="flex-grow container mx-auto px-4 py-8">
@@ -53,3 +53,4 @@ export default async function RootLayout({
     </html>
   );
 }
+
